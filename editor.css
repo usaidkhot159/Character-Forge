@@ -1,0 +1,287 @@
+/* ─── Editor Panel ─── */
+.editor-panel {
+  background: rgba(18,16,46,0.85);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 16px;
+  padding: 28px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,168,76,0.15);
+}
+
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.editor-section { margin-bottom: 26px; }
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+
+label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.7);
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  background: rgba(10,10,26,0.7);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  padding: 9px 13px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(201,168,76,0.15), 0 0 12px rgba(201,168,76,0.1);
+}
+
+select option { background: #12102e; }
+
+textarea { resize: vertical; min-height: 72px; }
+
+/* Stat sliders */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.stat-item label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.stat-val {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--bright-gold);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  outline: none;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--bright-gold);
+  box-shadow: 0 0 8px rgba(240,192,64,0.6);
+  cursor: pointer;
+}
+
+/* Avatar uploader */
+.avatar-uploader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar-preview {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.4);
+  overflow: hidden;
+  background: rgba(10,10,26,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 2rem;
+}
+
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-btn {
+  flex: 1;
+  background: rgba(201,168,76,0.08);
+  border: 1px dashed rgba(201,168,76,0.35);
+  border-radius: 8px;
+  color: rgba(201,168,76,0.7);
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.upload-btn:hover {
+  background: rgba(201,168,76,0.14);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+#avatarInput { display: none; }
+
+/* Skills pills */
+.skills-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+  min-height: 32px;
+}
+
+.pill {
+  background: rgba(45,40,96,0.9);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 20px;
+  padding: 4px 12px 4px 10px;
+  font-family: 'Crimson Text', serif;
+  font-size: 0.9rem;
+  color: var(--pale-gold);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+}
+
+.pill-remove {
+  cursor: pointer;
+  color: rgba(201,168,76,0.4);
+  font-size: 0.8rem;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.pill-remove:hover { color: var(--ember); }
+
+.skill-add-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.skill-add-row input { flex: 1; }
+
+.btn-add-skill {
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 8px;
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  padding: 0 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-add-skill:hover {
+  background: rgba(201,168,76,0.25);
+  border-color: var(--gold);
+}
+
+/* Theme swatches */
+.theme-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.theme-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.theme-swatch:hover { transform: scale(1.15); }
+.theme-swatch.active { border-color: white; transform: scale(1.1); }
+
+/* Export button */
+.export-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #8b6914 0%, #c9a84c 40%, #f0c040 70%, #c9a84c 100%);
+  border: none;
+  border-radius: 10px;
+  color: #0a0a1a;
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 14px;
+  cursor: pointer;
+  margin-top: 24px;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.export-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.4s;
+}
+
+.export-btn:hover::before { left: 100%; }
+.export-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(201,168,76,0.5); }
+.export-btn:active { transform: translateY(0); }
