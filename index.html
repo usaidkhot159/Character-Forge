@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🎭 Character Card Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="styles/base.css"/>
+<link rel="stylesheet" href="styles/editor.css"/>
+<link rel="stylesheet" href="styles/card.css"/>
+</head>
+<body>
+
+<div class="app-container">
+  <header class="app-header">
+    <h1 class="app-title">🎭 Character Forge</h1>
+    <p class="app-subtitle">Fantasy &amp; Game Character Card Generator</p>
+  </header>
+
+  <div class="main-layout">
+    <!-- Editor -->
+    <div class="editor-panel">
+
+      <!-- Identity -->
+      <div class="editor-section">
+        <div class="section-title">⚔️ Identity</div>
+        <div class="field-row" style="margin-bottom:12px">
+          <div class="field-group">
+            <label>Character Name</label>
+            <input type="text" id="charName" placeholder="e.g. Aelindra Vex" maxlength="24" value="Aelindra Vex"/>
+          </div>
+          <div class="field-group">
+            <label>Class</label>
+            <select id="charClass">
+              <option>Arcane Mage</option>
+              <option>Shadow Rogue</option>
+              <option>Holy Paladin</option>
+              <option>Berserker</option>
+              <option>Druid</option>
+              <option>Necromancer</option>
+              <option>Ranger</option>
+              <option>Bard</option>
+              <option>Monk</option>
+              <option>Warlock</option>
+              <option>Custom…</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label>Level</label>
+            <input type="number" id="charLevel" min="1" max="100" value="42"/>
+          </div>
+          <div class="field-group">
+            <label>Race / Origin</label>
+            <input type="text" id="charRace" placeholder="e.g. High Elf" value="High Elf"/>
+          </div>
+        </div>
+        <div id="customClassRow" class="field-group" style="margin-top:10px;display:none">
+          <label>Custom Class</label>
+          <input type="text" id="customClass" placeholder="Enter custom class…"/>
+        </div>
+      </div>
+
+      <!-- Avatar -->
+      <div class="editor-section">
+        <div class="section-title">🖼️ Avatar</div>
+        <div class="avatar-uploader">
+          <div class="avatar-preview" id="editorAvatarPreview">🧙</div>
+          <label class="upload-btn" for="avatarInput">
+            📁 Upload Image<br/>
+            <span style="font-size:0.65rem;opacity:0.6">(PNG, JPG, GIF)</span>
+          </label>
+          <input type="file" id="avatarInput" accept="image/*"/>
+          <div class="field-group" style="width:60px;flex-shrink:0">
+            <label>Emoji</label>
+            <input type="text" id="emojiInput" placeholder="🧙" maxlength="4" value="🧙" style="text-align:center;font-size:1.5rem;padding:4px"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="editor-section">
+        <div class="section-title">📊 Stats</div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <label>Strength <span class="stat-val" id="strVal">65</span></label>
+            <input type="range" id="statStr" min="1" max="100" value="65" oninput="document.getElementById('strVal').textContent=this.value;updateCard()"/>
+          </div>
+          <div class="stat-item">
+            <label>Intelligence <span class="stat-val" id="intVal">90</span></label>
+            <input type="range" id="statInt" min="1" max="100" value="90" oninput="document.getElementById('intVal').textContent=this.value;updateCard()"/>
+          </div>
+          <div class="stat-item">
+            <label>Agility <span class="stat-val" id="agiVal">78</span></label>
+            <input type="range" id="statAgi" min="1" max="100" value="78" oninput="document.getElementById('agiVal').textContent=this.value;updateCard()"/>
+          </div>
+          <div class="stat-item">
+            <label>Defense <span class="stat-val" id="defVal">55</span></label>
+            <input type="range" id="statDef" min="1" max="100" value="55" oninput="document.getElementById('defVal').textContent=this.value;updateCard()"/>
+          </div>
+          <div class="stat-item">
+            <label>Mana <span class="stat-val" id="mnaVal">95</span></label>
+            <input type="range" id="statMna" min="1" max="100" value="95" oninput="document.getElementById('mnaVal').textContent=this.value;updateCard()"/>
+          </div>
+          <div class="stat-item">
+            <label>Luck <span class="stat-val" id="lckVal">42</span></label>
+            <input type="range" id="statLck" min="1" max="100" value="42" oninput="document.getElementById('lckVal').textContent=this.value;updateCard()"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="editor-section">
+        <div class="section-title">✨ Skills</div>
+        <div class="skill-add-row">
+          <input type="text" id="skillInput" placeholder="e.g. Arcane Surge" maxlength="30" onkeydown="if(event.key==='Enter')addSkill()"/>
+          <button class="btn-add-skill" onclick="addSkill()">+ Add</button>
+        </div>
+        <div class="skills-pills" id="skillsPills"></div>
+      </div>
+
+      <!-- Bio -->
+      <div class="editor-section">
+        <div class="section-title">📜 Lore / Bio</div>
+        <div class="field-group">
+          <label>Character Backstory</label>
+          <textarea id="charBio" placeholder="A wandering mage who mastered the forbidden arts…" rows="3">Ancient mage of the Vexian Order, master of time magic and arcane manipulation. Exiled for bending the laws of reality.</textarea>
+        </div>
+      </div>
+
+      <!-- Card Theme -->
+      <div class="editor-section">
+        <div class="section-title">🎨 Card Theme</div>
+        <div class="theme-row">
+          <div class="theme-swatch active" style="background:linear-gradient(135deg,#1e1a45,#0f0d2a)" data-theme="arcane" onclick="setTheme(this,'arcane','#1a1640','rgba(45,40,160,0.4)')"></div>
+          <div class="theme-swatch" style="background:linear-gradient(135deg,#3a1508,#1a0508)" data-theme="inferno" onclick="setTheme(this,'inferno','#3a0d08','rgba(200,60,20,0.4)')"></div>
+          <div class="theme-swatch" style="background:linear-gradient(135deg,#0d2a12,#0a1a10)" data-theme="nature" onclick="setTheme(this,'nature','#0d2a10','rgba(40,160,60,0.4)')"></div>
+          <div class="theme-swatch" style="background:linear-gradient(135deg,#0a1828,#0d1835)" data-theme="frost" onclick="setTheme(this,'frost','#0a1828','rgba(40,120,220,0.4)')"></div>
+          <div class="theme-swatch" style="background:linear-gradient(135deg,#1a0d1a,#0d0a0d)" data-theme="shadow" onclick="setTheme(this,'shadow','#1a0d1a','rgba(160,40,200,0.35)')"></div>
+        </div>
+      </div>
+
+      <!-- Export -->
+      <button class="export-btn" onclick="exportCard()">⬇ Export Card as PNG</button>
+    </div>
+
+    <!-- Preview -->
+    <div class="card-container">
+      <div class="preview-label">✦ Live Preview ✦</div>
+
+      <div id="characterCard" class="theme-arcane">
+        <!-- Ambient glow -->
+        <div class="card-glow" id="cardGlow" style="background:radial-gradient(circle,rgba(45,40,160,0.5),transparent)"></div>
+
+        <!-- Corner ornaments -->
+        <div class="card-corner tl">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 28 L2 2 L28 2" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+            <path d="M2 2 L10 10" stroke="#c9a84c" stroke-width="1" opacity="0.5"/>
+            <circle cx="2" cy="2" r="2" fill="#c9a84c"/>
+          </svg>
+        </div>
+        <div class="card-corner tr">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 28 L2 2 L28 2" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+            <path d="M2 2 L10 10" stroke="#c9a84c" stroke-width="1" opacity="0.5"/>
+            <circle cx="2" cy="2" r="2" fill="#c9a84c"/>
+          </svg>
+        </div>
+        <div class="card-corner bl">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 28 L2 2 L28 2" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+            <path d="M2 2 L10 10" stroke="#c9a84c" stroke-width="1" opacity="0.5"/>
+            <circle cx="2" cy="2" r="2" fill="#c9a84c"/>
+          </svg>
+        </div>
+        <div class="card-corner br">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 28 L2 2 L28 2" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+            <path d="M2 2 L10 10" stroke="#c9a84c" stroke-width="1" opacity="0.5"/>
+            <circle cx="2" cy="2" r="2" fill="#c9a84c"/>
+          </svg>
+        </div>
+
+        <!-- Header -->
+        <div class="card-header">
+          <div class="avatar-ring">
+            <div class="avatar-inner" id="cardAvatar">🧙</div>
+          </div>
+          <div class="card-name" id="cardName">Aelindra Vex</div>
+          <div class="card-class-row">
+            <span class="card-class" id="cardClass">Arcane Mage</span>
+            <span class="card-level-badge">LVL <span id="cardLevel">42</span></span>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="card-stats">
+          <div class="stat-bar-item">
+            <div class="stat-header">
+              <span class="stat-name">⚔️ STR</span>
+              <span class="stat-number" id="cStr">65</span>
+            </div>
+            <div class="stat-track"><div class="stat-fill" id="fStr" style="width:65%;background:linear-gradient(90deg,#c0392b,#e74c3c)"></div></div>
+          </div>
+          <div class="stat-bar-item">
+            <div class="stat-header">
+              <span class="stat-name">🧠 INT</span>
+              <span class="stat-number" id="cInt">90</span>
+            </div>
+            <div class="stat-track"><div class="stat-fill" id="fInt" style="width:90%;background:linear-gradient(90deg,#7d3cff,#a855f7)"></div></div>
+          </div>
+          <div class="stat-bar-item">
+            <div class="stat-header">
+              <span class="stat-name">💨 AGI</span>
+              <span class="stat-number" id="cAgi">78</span>
+            </div>
+            <div class="stat-track"><div class="stat-fill" id="fAgi" style="width:78%;background:linear-gradient(90deg,#16a085,#4fd1c5)"></div></div>
+          </div>
+          <div class="stat-bar-item">
+            <div class="stat-header">
+              <span class="stat-name">🛡️ DEF</span>
+              <span class="stat-number" id="cDef">55</span>
+            </div>
+            <div class="stat-track"><div class="stat-fill" id="fDef" style="width:55%;background:linear-gradient(90deg,#b8860b,#f0c040)"></div></div>
+          </div>
+          <div class="stat-bar-item">
+            <div class="stat-header">
+              <span class="stat-name">🔮 MNA</span>
+              <span class="stat-number" id="cMna">95</span>
+            </div>
+            <div class="stat-track"><div class="stat-fill" id="fMna" style="width:95%;background:linear-gradient(90deg,#1a73e8,#4fc3f7)"></div></div>
+          </div>
+          <div class="stat-bar-item">
+            <div class="stat-header">
+              <span class="stat-name">🍀 LCK</span>
+              <span class="stat-number" id="cLck">42</span>
+            </div>
+            <div class="stat-track"><div class="stat-fill" id="fLck" style="width:42%;background:linear-gradient(90deg,#27ae60,#2ecc71)"></div></div>
+          </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="card-skills">
+          <div class="skills-label">Skills</div>
+          <div class="card-skills-pills" id="cardSkills">
+            <span class="card-pill">Arcane Surge</span>
+            <span class="card-pill">Time Warp</span>
+            <span class="card-pill">Void Shield</span>
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="card-bio">
+          <div class="bio-label">Lore</div>
+          <div class="bio-text" id="cardBio">Ancient mage of the Vexian Order, master of time magic and arcane manipulation. Exiled for bending the laws of reality.</div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer">
+          <div class="card-footer-text">✦ Character Forge — Fantasy Edition ✦</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+<script src="js/export.js"></script>
+</body>
+</html>
